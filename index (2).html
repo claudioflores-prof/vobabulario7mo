@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Misión Vocabulario · 7° Octubre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#F1F4F9; --bg-dot:rgba(47,111,237,0.16);
+    --surface:#FFFFFF; --surface-2:#E7ECF5;
+    --text:#101826; --text-muted:#55607A; --border:#D7DEEA;
+    --blue:#2F6FED; --blue-ink:#FFFFFF;
+    --green:#1FA87A; --red:#E4483B; --amber:#C98418;
+    --shadow:0 1px 2px rgba(16,24,38,0.04), 0 8px 24px -8px rgba(16,24,38,0.12);
+    --r-lg:22px; --r-md:14px; --r-sm:9px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A1120; --bg-dot:rgba(91,143,255,0.16);
+      --surface:#121B2E; --surface-2:#1A2740;
+      --text:#EAF0FB; --text-muted:#8C9AB8; --border:#24304A;
+      --blue:#5B8FFF; --blue-ink:#08101F;
+      --green:#35D399; --red:#FF6B5E; --amber:#F0B94D;
+      --shadow:0 1px 2px rgba(0,0,0,0.3), 0 12px 32px -10px rgba(0,0,0,0.55);
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(var(--bg-dot) 1.4px, transparent 1.4px) 0 0/28px 28px, var(--bg);
+    color:var(--text);
+    font-family:"Lexend", ui-sans-serif, system-ui, sans-serif;
+    min-height:100vh;
+    padding:22px 16px 30px;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{margin:0;text-wrap:balance;}
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;}
+  .hidden{display:none !important;}
+  .wrap{max-width:680px;margin:0 auto;}
+
+  /* ---------- barra superior ---------- */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .steps{list-style:none;margin:0;padding:0;display:flex;gap:6px;flex:1;min-width:220px;}
+  .step{flex:1;display:flex;flex-direction:column;gap:5px;font-size:10.5px;color:var(--text-muted);min-width:0;}
+  .step i{display:block;height:6px;border-radius:99px;background:var(--surface-2);border:1px solid var(--border);}
+  .step span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .step.done i{background:var(--green);border-color:var(--green);}
+  .step.cur i{background:var(--blue);border-color:var(--blue);}
+  .step.cur span{color:var(--text);font-weight:600;}
+  .chips{display:flex;gap:8px;}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;padding:6px 11px;border-radius:99px;background:var(--surface);border:1px solid var(--border);}
+  .chip-pts{color:var(--amber);}
+
+  /* ---------- tarjeta ---------- */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:30px 28px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);background:color-mix(in srgb,var(--blue) 12%,transparent);border:1px solid color-mix(in srgb,var(--blue) 30%,transparent);padding:5px 11px;border-radius:99px;}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);}
+  h1.title{font-size:clamp(27px,5vw,35px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:16px;}
+  .subtitle{color:var(--text-muted);font-size:15px;margin-top:10px;line-height:1.55;}
+  .act-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  .seg{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text-muted);}
+  .seg.over{color:var(--amber);font-weight:600;}
+  .act-title{font-size:25px;font-weight:800;letter-spacing:-.01em;margin-top:14px;}
+  .act-sub{color:var(--text-muted);font-size:14.5px;line-height:1.5;margin:8px 0 0;}
+
+  .route{margin:22px 0 4px;display:flex;flex-direction:column;gap:8px;}
+  .route div{display:flex;align-items:center;gap:12px;border:1px solid var(--border);background:var(--surface-2);border-radius:var(--r-md);padding:10px 14px;font-size:14px;}
+  .route b{font-family:"IBM Plex Mono",monospace;width:24px;height:24px;border-radius:8px;background:var(--blue);color:var(--blue-ink);display:flex;align-items:center;justify-content:center;font-size:12.5px;flex-shrink:0;}
+  .route em{margin-left:auto;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text-muted);}
+
+  .field-row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .field{flex:1;min-width:150px;}
+  .field label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;}
+  input[type=text],select,textarea{width:100%;font-family:"Lexend",sans-serif;font-size:15px;padding:11px 13px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--surface);color:var(--text);}
+  textarea{resize:vertical;min-height:62px;line-height:1.45;}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  .btn{appearance:none;border:none;cursor:pointer;font-family:"Lexend",sans-serif;font-weight:700;font-size:15px;border-radius:99px;padding:13px 24px;transition:transform .1s ease,opacity .15s;}
+  .btn:active{transform:scale(.98);}
+  .btn:focus-visible,.opt:focus-visible,.tile:focus-visible{outline:3px solid var(--amber);outline-offset:2px;}
+  .btn-primary{background:var(--blue);color:var(--blue-ink);width:100%;margin-top:22px;}
+  .btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border);padding:10px 18px;font-size:13.5px;}
+  .btn-ghost:hover{border-color:var(--blue);}
+  .btn:disabled{opacity:.45;cursor:default;}
+
+  .pbar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:8px;}
+  .pbar i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .3s;}
+  .pbar.big{height:12px;}
+  .qmeta{margin-top:18px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--text-muted);}
+
+  /* ---------- parejas ---------- */
+  .pairs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
+  .col{display:flex;flex-direction:column;gap:9px;}
+  .tile{text-align:center;font-family:"Lexend",sans-serif;font-size:14.5px;min-height:54px;padding:10px 8px;border-radius:var(--r-md);border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;}
+  .tile.L{font-weight:700;}
+  .tile:hover:not(:disabled){border-color:var(--blue);background:var(--surface-2);}
+  .tile.sel{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--surface));box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 25%,transparent);}
+  .tile.ok{border-color:var(--green);background:color-mix(in srgb,var(--green) 16%,var(--surface));opacity:.8;cursor:default;}
+  .tile.bad{border-color:var(--red);background:color-mix(in srgb,var(--red) 14%,var(--surface));animation:shake .35s;}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+  /* ---------- opciones ---------- */
+  .sentence{margin-top:18px;font-size:17px;line-height:1.6;background:var(--surface-2);border-left:3px solid var(--blue);padding:14px 16px;border-radius:8px;}
+  .blank{display:inline-block;min-width:92px;border-bottom:2.5px solid var(--blue);text-align:center;color:transparent;font-weight:700;padding:0 6px;}
+  .blank.on{color:var(--green);border-color:var(--green);}
+  .tiles4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .opt{text-align:left;font-family:"Lexend",sans-serif;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);padding:13px 16px;font-size:15px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s;}
+  .opt .k{flex-shrink:0;width:24px;height:24px;border-radius:7px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text-muted);}
+  .opt:hover:not(:disabled){border-color:var(--blue);background:var(--surface-2);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--green);background:color-mix(in srgb,var(--green) 14%,var(--surface));}
+  .opt.correct .k{background:var(--green);border-color:var(--green);color:#fff;}
+  .opt.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 12%,var(--surface));}
+  .opt.wrong .k{background:var(--red);border-color:var(--red);color:#fff;}
+  .opt.dim{opacity:.5;}
+  .fb{min-height:22px;margin-top:14px;font-size:14px;line-height:1.5;color:var(--text-muted);}
+  .fb b{color:var(--text);}
+  .fb.good{color:var(--green);} .fb.bad{color:var(--red);}
+  #nx .btn{margin-top:14px;}
+
+  /* ---------- pistas ---------- */
+  .clues{display:flex;flex-direction:column;gap:9px;margin-top:18px;}
+  .clue{border:1.5px solid var(--border);border-radius:var(--r-md);padding:12px 16px;font-size:15px;background:var(--surface-2);}
+  .clue small{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px;}
+  .clue.locked{opacity:.45;border-style:dashed;background:transparent;}
+  .clue .mask{font-family:"IBM Plex Mono",monospace;font-size:17px;letter-spacing:.08em;white-space:pre-wrap;}
+  .ansrow{display:flex;gap:10px;margin-top:16px;}
+  .ansrow .btn{padding:11px 20px;}
+  .ansrow2{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+
+  /* ---------- redacción ---------- */
+  .wr{margin-top:18px;}
+  .wr label{display:block;font-size:14px;margin-bottom:6px;}
+  .wr label b{font-size:16px;}
+  .wr label span{color:var(--text-muted);font-size:12.5px;}
+  .st{font-size:12.5px;margin-top:5px;color:var(--text-muted);font-family:"IBM Plex Mono",monospace;}
+  .st.ok{color:var(--green);}
+  .rv{border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);padding:13px 15px;margin-top:12px;font-size:14px;line-height:1.5;}
+  .rv .t{font-weight:700;} .rv .mine{margin-top:6px;font-style:italic;} .rv .model{margin-top:6px;color:var(--text-muted);}
+  .rv.ok{border-left:4px solid var(--green);} .rv.mid{border-left:4px solid var(--amber);} .rv.no{border-left:4px solid var(--red);}
+  .check{margin-top:16px;border:1px dashed var(--border);border-radius:var(--r-md);padding:12px 16px;font-size:13.5px;color:var(--text-muted);line-height:1.6;}
+
+  /* ---------- final ---------- */
+  .done-box{margin-top:20px;text-align:center;}
+  .done-score{font-family:"IBM Plex Mono",monospace;font-size:48px;font-weight:700;}
+  .done-score span{font-size:18px;color:var(--text-muted);margin-left:6px;}
+  .extra{margin-top:14px;font-size:14px;color:var(--text-muted);line-height:1.55;}
+  .bars{margin-top:22px;display:flex;flex-direction:column;gap:12px;}
+  .bars .lbl{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
+  .bars .lbl b{font-family:"IBM Plex Mono",monospace;}
+  .review-list{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;}
+  .review-item{border:1px solid var(--border);background:var(--surface-2);border-radius:var(--r-sm);padding:10px 13px;}
+  .review-item .term{font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--red);font-size:13.5px;}
+  .review-item .desc{font-size:13px;color:var(--text-muted);margin-top:3px;line-height:1.45;}
+  .result-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .result-actions .btn{flex:1;margin-top:0;min-width:150px;}
+  .foot{text-align:center;font-size:11.5px;color:var(--text-muted);margin-top:16px;}
+  .sr{position:absolute;left:-9999px;}
+
+  @media (max-width:520px){
+    .card{padding:22px 16px;border-radius:16px;}
+    .step span{display:none;}
+    .tiles4{grid-template-columns:1fr;}
+    .pairs{gap:8px;}
+    .tile{font-size:13.5px;}
+  }
+  @media (prefers-reduced-motion:reduce){ .tile.bad{animation:none;} .pbar i{transition:none;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top hidden" id="top">
+    <ol class="steps" id="steps" aria-label="Progreso de las actividades"></ol>
+    <div class="chips">
+      <span class="chip" id="chip-clock" aria-label="Tiempo transcurrido">⏱ 00:00</span>
+      <span class="chip chip-pts" id="chip-pts" aria-label="Puntos">★ 0</span>
+    </div>
+  </header>
+
+  <main class="card" id="view"></main>
+  <footer class="foot">Colegio Nahuel · Habilidades Digitales · 7° básico · Vocabulario de octubre</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* =====================================================================
+   DATOS · Vocabulario de Estadística con Hojas de cálculo (7° · Octubre)
+   t = concepto · s = sinónimos · f = frecuencia · ej = oración de ejemplo
+   d = distractores para "Completa la frase"
+   ===================================================================== */
+var TERMS = [
+ // ---- Alta frecuencia ----
+ {t:"Hoja de cálculo",s:["Planilla","Libro de cálculo"],f:"alta",ej:"Excel y Google Sheets son ejemplos de lo que llamamos ___.",d:["Tabla","Gráfico","Función"]},
+ {t:"Celda",s:["Casilla","Recuadro"],f:"alta",ej:"El cuadrito donde se cruzan una fila y una columna, y donde escribo un dato, se llama ___.",d:["Fila","Rango de celdas","Tabla"]},
+ {t:"Fila",s:["Renglón","Línea horizontal"],f:"alta",ej:"Cada línea horizontal de la tabla, que reúne todos los datos de un estudiante, se llama ___.",d:["Columna","Celda","Tabla"]},
+ {t:"Columna",s:["Franja vertical","Campo"],f:"alta",ej:"Cada línea vertical de la tabla, donde quedan todas las edades una bajo otra, se llama ___.",d:["Fila","Celda","Rango de celdas"]},
+ {t:"Dato",s:["Valor","Registro"],f:"alta",ej:"Cada número o texto que escribo en una celda, como 13 o gato, se llama ___.",d:["Fórmula","Función","Referencia"]},
+ {t:"Tabla",s:["Cuadro","Matriz de datos"],f:"alta",ej:"Información ordenada en filas y columnas con encabezados forma lo que llamamos ___.",d:["Celda","Fórmula","Gráfico"]},
+ {t:"Fórmula",s:["Expresión","Cálculo automático"],f:"alta",ej:"Lo que yo mismo escribo con el signo = para operar con celdas, como =B2+B3, se llama ___.",d:["Función","Dato","Referencia"]},
+ {t:"Función",s:["Comando","Operación predefinida"],f:"alta",ej:"SUMA, PROMEDIO y CONTAR vienen ya hechas en la hoja de cálculo: son comandos que llamamos ___.",d:["Fórmula","Variable","Rango de celdas"]},
+ {t:"Rango de celdas",s:["Selección","Bloque de celdas"],f:"alta",ej:"B2:B10 señala un bloque de varias celdas seguidas, que llamamos ___.",d:["Celda","Referencia","Columna"]},
+ {t:"Referencia",s:["Dirección de celda","Coordenada"],f:"alta",ej:"C4 es la dirección que identifica a una celda; esa dirección se llama ___.",d:["Rango de celdas","Dato","Fila"]},
+ {t:"Ordenar",s:["Clasificar","Acomodar"],f:"alta",ej:"Para que las notas aparezcan de mayor a menor, debo ___ la tabla.",d:["Filtrar","Sumar","Contar"],rx:/\borden(ar|e|es|o|a|ada|ado|amos|an|ando|aron)\b/},
+ {t:"Filtrar",s:["Seleccionar","Separar"],f:"alta",ej:"Para ver solamente a los estudiantes de 7°C y ocultar al resto, debo ___ la tabla.",d:["Ordenar","Sumar","Contar"],rx:/\bfiltr(ar|e|es|o|os|a|ada|ado|amos|an|ando|aron)\b/},
+ {t:"Sumar",s:["Totalizar","Acumular"],f:"alta",ej:"Para obtener el total de goles de todos los partidos, debo ___ los valores de la columna.",d:["Contar","Filtrar","Ordenar"],rx:/\bsum(ar|e|es|o|a|ada|ado|amos|an|ando|aron)\b/},
+ {t:"Contar",s:["Enumerar","Tabular"],f:"alta",ej:"Para saber cuántos estudiantes respondieron la encuesta, debo ___ las filas que tienen datos.",d:["Sumar","Filtrar","Ordenar"],rx:/\b(cont(ar|e|es|amos|ando|ado|ada|aron)|cuent(o|a|an|as|e|en))\b/},
+ {t:"Promedio",s:["Media","Valor típico"],f:"alta",ej:"Al sumar todas las notas y dividir por la cantidad de notas, el resultado se llama ___.",d:["Porcentaje","Frecuencia absoluta","Escala"]},
+ // ---- Baja frecuencia ----
+ {t:"Variable",s:["Característica","Atributo"],f:"baja",ej:"Una característica que cambia de persona en persona, como la edad o la mascota favorita, se llama ___.",d:["Categoría","Leyenda","Escala"]},
+ {t:"Categoría",s:["Clase","Grupo"],f:"baja",ej:"Cada opción distinta que puede tener una variable, como perro, gato o pez, se llama ___.",d:["Variable","Escala","Eje"]},
+ {t:"Frecuencia absoluta",s:["Conteo","Cantidad de casos"],f:"baja",ej:"Decir que 8 estudiantes eligieron gato, usando solo el conteo, se llama ___.",d:["Frecuencia relativa","Promedio","Escala"]},
+ {t:"Frecuencia relativa",s:["Proporción","Fracción del total"],f:"baja",ej:"Decir que 8 de 32 estudiantes eligieron gato, es decir la fracción 8/32 del total, se llama ___.",d:["Frecuencia absoluta","Escala","Variable"]},
+ {t:"Porcentaje",s:["Tanto por ciento","Parte por cien"],f:"baja",ej:"Decir que 25 de cada 100 estudiantes eligieron gato, o sea 25 %, es expresar el dato como ___.",d:["Promedio","Escala","Frecuencia absoluta"]},
+ {t:"Tabla de frecuencias",s:["Cuadro de conteo","Distribución"],f:"baja",ej:"Un cuadro que muestra cada categoría junto a cuántas veces aparece se llama ___.",d:["Hoja de cálculo","Gráfico","Rango de celdas"]},
+ {t:"Gráfico",s:["Diagrama","Representación visual"],f:"baja",ej:"Los datos se entienden de un vistazo cuando los dibujamos en lo que llamamos ___.",d:["Tabla","Fórmula","Leyenda"]},
+ {t:"Gráfico de columnas",s:["Gráfico de barras verticales","Diagrama de columnas"],f:"baja",ej:"Un dibujo de barras verticales, una por categoría, para comparar sus alturas, se llama ___.",d:["Gráfico circular","Leyenda","Tabla de frecuencias"]},
+ {t:"Gráfico circular",s:["Gráfico de torta","Diagrama de sectores"],f:"baja",ej:"Un círculo dividido en sectores que muestra cómo se reparte el 100 % entre las categorías se llama ___.",d:["Gráfico de columnas","Eje","Tabla"]},
+ {t:"Eje",s:["Línea de referencia","Recta graduada"],f:"baja",ej:"Cada línea horizontal o vertical de un gráfico que lleva nombres o números se llama ___.",d:["Leyenda","Fuente de datos","Categoría"]},
+ {t:"Escala",s:["Graduación","Unidad de medida"],f:"baja",ej:"La graduación o unidad con que se miden los datos en un gráfico, por ejemplo de 10 en 10, se llama ___.",d:["Leyenda","Fuente de datos","Variable"]},
+ {t:"Leyenda",s:["Clave del gráfico","Guía de colores"],f:"baja",ej:"El recuadro que explica qué color representa cada categoría en un gráfico se llama ___.",d:["Eje","Escala","Fuente de datos"]},
+ {t:"Fuente de datos",s:["Origen","Procedencia"],f:"baja",ej:"Anotar que los datos vienen de la «Encuesta del curso 7°C, octubre» indica su origen, que se llama ___.",d:["Leyenda","Escala","Variable"]},
+ {t:"Interpretar",s:["Explicar","Leer los datos"],f:"baja",ej:"Después de construir el gráfico, debo ___ lo que dicen los datos y explicar mis conclusiones con palabras.",d:["Ordenar","Filtrar","Sumar"],rx:/\binterpret(ar|e|es|o|a|ada|ado|amos|an|ando|aron|acion|aciones)\b/},
+ {t:"Gráfico engañoso",s:["Gráfico manipulado","Representación distorsionada"],f:"baja",ej:"Si el eje parte en 90 en vez de 0 para que una diferencia mínima parezca enorme, estamos ante lo que se llama ___.",d:["Tabla de frecuencias","Leyenda","Gráfico circular"]}
+];
+
+// Pares que los estudiantes suelen confundir (se usan para armar mejores distractores)
+var CONF = [["Fila","Columna"],["Celda","Rango de celdas"],["Celda","Referencia"],["Fórmula","Función"],
+ ["Sumar","Contar"],["Sumar","Promedio"],["Contar","Promedio"],["Ordenar","Filtrar"],["Dato","Variable"],
+ ["Variable","Categoría"],["Frecuencia absoluta","Frecuencia relativa"],["Frecuencia relativa","Porcentaje"],
+ ["Gráfico de columnas","Gráfico circular"],["Eje","Escala"],["Escala","Leyenda"],["Tabla","Hoja de cálculo"],
+ ["Tabla","Tabla de frecuencias"],["Gráfico","Gráfico engañoso"]];
+
+var ACTS = [
+ {n:"Parejas veloces",min:5,max:150},
+ {n:"El intruso",min:4,max:100},
+ {n:"Completa la frase",min:5,max:100},
+ {n:"Adivina el término",min:7,max:120},
+ {n:"Tu propia redacción",min:7,max:40}
+];
+
+/* ============================ UTILIDADES ============================ */
+var BYNAME = {}, CONFMAP = {};
+TERMS.forEach(function(x){ BYNAME[x.t] = x; });
+CONF.forEach(function(p){
+  (CONFMAP[p[0]] = CONFMAP[p[0]] || []).push(p[1]);
+  (CONFMAP[p[1]] = CONFMAP[p[1]] || []).push(p[0]);
+});
+
+function $(s, r){ return (r || document).querySelector(s); }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function norm(s){ return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim(); }
+function toks(s){ return norm(s).split(" ").filter(function(w){ return w.length > 3; }).map(function(w){ return w.slice(0,5); }); }
+function shuffle(a){ a = a.slice(); for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function mmss(s){ var m=Math.floor(s/60), r=s%60; return (m<10?"0":"")+m+":"+(r<10?"0":"")+r; }
+function sum(a){ return a.reduce(function(x,y){ return x+y; }, 0); }
+function lcFirst(s){ return s.charAt(0).toLowerCase() + s.slice(1); }
+function fill(x){ return x.ej.replace("___", lcFirst(x.t)); }
+function lev(a,b){ var m=[],i,j; for(i=0;i<=a.length;i++) m[i]=[i]; for(j=1;j<=b.length;j++) m[0][j]=j;
+  for(i=1;i<=a.length;i++) for(j=1;j<=b.length;j++) m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return m[a.length][b.length]; }
+function mask(t){ return t.split(" ").map(function(w){ var r=w.charAt(0); for(var i=1;i<w.length;i++) r+=" _"; return r; }).join("     "); }
+function termRx(x){
+  if (x.rx) return x.rx;
+  var parts = norm(x.t).split(" ").map(function(w){ var b = w.length>4 ? w.replace(/s$/,"") : w; return b + "(s|es)?"; });
+  return new RegExp("\\b" + parts.join(" ") + "\\b");
+}
+
+/* ============================== ESTADO ============================== */
+var S;
+function newState(){
+  S = {name:"", curso:"", t0:0, iv:null, fails:{}, scores:[0,0,0,0,0], cur:-1, actT0:0, keyH:null};
+}
+newState();
+function fail(t){ S.fails[t] = (S.fails[t]||0) + 1; }
+function addScore(i, pts){ S.scores[i] = Math.max(0, S.scores[i] + pts); updateTop(); }
+
+/* ============================ INTERFAZ ============================== */
+var VIEW = $("#view");
+function view(html){ VIEW.innerHTML = html; window.scrollTo(0,0); }
+
+function updateTop(){
+  var steps = ACTS.map(function(a,i){
+    var c = i < S.cur ? "done" : (i === S.cur ? "cur" : "");
+    return '<li class="step '+c+'"><i></i><span>'+(i+1)+'. '+esc(a.n)+'</span></li>';
+  }).join("");
+  $("#steps").innerHTML = steps;
+  $("#chip-pts").textContent = "★ " + sum(S.scores);
+}
+function tick(){
+  var s = Math.floor((Date.now()-S.t0)/1000);
+  $("#chip-clock").textContent = "⏱ " + mmss(s);
+  var seg = $("#seg");
+  if (seg && S.cur >= 0 && S.cur < 5){
+    var e = Math.floor((Date.now()-S.actT0)/1000), m = ACTS[S.cur].min;
+    seg.textContent = "Sugerido " + m + " min · llevas " + mmss(e);
+    seg.classList.toggle("over", e > m*60);
+  }
+}
+function head(i, sub){
+  return '<div class="act-head"><span class="eyebrow"><span class="dot"></span> Actividad '+(i+1)+' de 5</span><span class="seg" id="seg"></span></div>'
+    + '<h2 class="act-title">'+esc(ACTS[i].n)+'</h2><p class="act-sub">'+sub+'</p>';
+}
+document.addEventListener("keydown", function(e){
+  if (S.keyH && !(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))) S.keyH(e);
+});
+
+/* ============================== INTRO =============================== */
+function intro(){
+  S.cur = -1; S.keyH = null;
+  $("#top").classList.add("hidden");
+  var route = ACTS.map(function(a,i){ return '<div><b>'+(i+1)+'</b>'+esc(a.n)+'<em>'+a.min+' min</em></div>'; }).join("");
+  view('<span class="eyebrow"><span class="dot"></span> 7° básico · Octubre · Colegio Nahuel</span>'
+    + '<h1 class="title">Misión Vocabulario: Estadística con Hojas de cálculo</h1>'
+    + '<p class="subtitle">5 actividades cortas para dominar los 30 conceptos y sus sinónimos antes de la evaluación. Ganas puntos por cada acierto; los términos que te cuesten quedarán anotados para que los repases al final.</p>'
+    + '<div class="route">'+route+'</div>'
+    + '<div class="field-row"><div class="field"><label for="in-nombre">Tu nombre</label><input id="in-nombre" type="text" maxlength="40" placeholder="Ej: Martina P." autocomplete="off"></div>'
+    + '<div class="field"><label for="in-curso">Curso</label><select id="in-curso"><option value="">Elegir…</option><option>7°C</option><option>7°D</option><option>Otro</option></select></div></div>'
+    + '<button class="btn btn-primary" id="btn-start">Comenzar misión →</button>');
+  $("#btn-start").onclick = function(){
+    S.name = $("#in-nombre").value.trim(); S.curso = $("#in-curso").value;
+    S.t0 = Date.now(); clearInterval(S.iv); S.iv = setInterval(tick, 1000);
+    $("#top").classList.remove("hidden"); tick(); startAct(0);
+  };
+}
+
+function startAct(i){
+  S.cur = i; S.actT0 = Date.now(); S.keyH = null; updateTop();
+  [act1, act2, act3, act4, act5][i](); tick();
+}
+
+function actDone(i, extra){
+  var sc = S.scores[i], mx = ACTS[i].max;
+  S.keyH = function(e){ if (e.key === "Enter"){ var b = $("#go"); if (b) b.click(); } };
+  view(head(i, "¡Actividad completada!")
+    + '<div class="done-box"><div class="done-score">'+sc+'<span>/ '+mx+' puntos</span></div>'
+    + '<div class="pbar big"><i style="width:'+Math.round(sc/mx*100)+'%"></i></div>'
+    + (extra ? '<div class="extra">'+extra+'</div>' : '') + '</div>'
+    + '<button class="btn btn-primary" id="go">'+(i<4 ? 'Siguiente actividad →' : 'Ver mi resultado →')+'</button>');
+  $("#go").onclick = function(){ if (i < 4) startAct(i+1); else finish(); };
+  tick();
+}
+
+/* ================= ACTIVIDAD 1 · PAREJAS VELOCES ==================== */
+function act1(){
+  var alta = TERMS.filter(function(x){ return x.f==="alta"; });
+  var baja = TERMS.filter(function(x){ return x.f==="baja"; });
+  var used = {};
+  function makeRound(pool){
+    var cand = shuffle(pool.filter(function(x){ return !used[x.t]; })), out = [], tk = {};
+    cand.forEach(function(x){
+      if (out.length >= 5) return;
+      var syn = x.s[Math.floor(Math.random()*2)], tt = toks(x.t).concat(toks(syn));
+      if (tt.some(function(k){ return tk[k]; })) return;
+      tt.forEach(function(k){ tk[k] = 1; }); out.push({t:x.t, s:syn}); used[x.t] = 1;
+    });
+    cand.forEach(function(x){ if (out.length < 5 && !used[x.t]){ out.push({t:x.t, s:x.s[0]}); used[x.t] = 1; } });
+    return out;
+  }
+  var rounds = [makeRound(alta), makeRound(baja), makeRound(TERMS)];
+  var ri = 0, totalErr = 0;
+
+  function showRound(){
+    var r = rounds[ri], sel = null, done = 0, errs = 0;
+    var L = shuffle(r.map(function(p,i){ return {id:i, txt:p.t}; }));
+    var R = shuffle(r.map(function(p,i){ return {id:i, txt:p.s}; }));
+    function col(arr, side){
+      return arr.map(function(o){ return '<button class="tile '+side+'" data-id="'+o.id+'" data-side="'+side+'">'+esc(o.txt)+'</button>'; }).join("");
+    }
+    view(head(0, 'Une cada <b>término</b> (izquierda) con su <b>sinónimo</b> (derecha). Ronda '+(ri+1)+' de 3. Cada acierto suma 10 puntos; cada error resta 2.')
+      + '<div class="pbar"><i style="width:'+(ri/3*100)+'%"></i></div>'
+      + '<div class="pairs"><div class="col">'+col(L,"L")+'</div><div class="col">'+col(R,"R")+'</div></div>'
+      + '<div class="fb" id="fb" aria-live="polite">Elige un término y luego su sinónimo.</div>');
+    var tiles = VIEW.querySelectorAll(".tile");
+    Array.prototype.forEach.call(tiles, function(b){
+      b.onclick = function(){
+        if (b.classList.contains("ok")) return;
+        if (!sel || sel.dataset.side === b.dataset.side){
+          if (sel) sel.classList.remove("sel");
+          sel = b; b.classList.add("sel"); return;
+        }
+        var a = sel, c = b; sel = null; a.classList.remove("sel");
+        if (a.dataset.id === c.dataset.id){
+          a.classList.add("ok"); c.classList.add("ok"); a.disabled = c.disabled = true;
+          addScore(0, 10); done++;
+          var lt = (a.dataset.side==="L" ? a : c).textContent, rt = (a.dataset.side==="L" ? c : a).textContent;
+          $("#fb").className = "fb good"; $("#fb").innerHTML = '¡Bien! <b>'+esc(lt)+'</b> = '+esc(rt);
+          if (done === r.length){
+            totalErr += errs;
+            setTimeout(function(){ ri++; if (ri < 3) showRound(); else actDone(0, 'Cometiste '+totalErr+' error'+(totalErr===1?'':'es')+' en total. ¡Sigue así!'); }, 900);
+          }
+        } else {
+          errs++; addScore(0, -2);
+          var leftBtn = a.dataset.side==="L" ? a : c;
+          fail(r[+leftBtn.dataset.id].t);
+          a.classList.add("bad"); c.classList.add("bad");
+          setTimeout(function(){ a.classList.remove("bad"); c.classList.remove("bad"); }, 450);
+          $("#fb").className = "fb bad"; $("#fb").textContent = "Esos dos no van juntos. Inténtalo otra vez.";
+        }
+      };
+    });
+  }
+  showRound();
+}
+
+/* ===================== QUIZ GENÉRICO (act 2 y 3) ==================== */
+function runQuiz(ai, items, build, sub){
+  var n = 0, okN = 0;
+  function show(){
+    var q = build(items[n]), done = false;
+    view(head(ai, sub)
+      + '<div class="qmeta">Pregunta '+(n+1)+' / '+items.length+'</div>'
+      + '<div class="pbar"><i style="width:'+(n/items.length*100)+'%"></i></div>'
+      + q.prompt
+      + '<div class="'+(q.grid?'tiles4':'opts')+'" id="opts">'
+      + q.opts.map(function(o,k){ return '<button class="opt" data-k="'+k+'"><span class="k">'+(k+1)+'</span><span class="t">'+esc(o)+'</span></button>'; }).join("")
+      + '</div><div class="fb" id="fb" aria-live="polite"></div><div id="nx"></div>');
+    var btns = VIEW.querySelectorAll(".opt");
+    function pick(k){
+      if (done) return; done = true;
+      var good = (k === q.correct);
+      Array.prototype.forEach.call(btns, function(b,idx){
+        b.disabled = true;
+        if (idx === q.correct) b.classList.add("correct");
+        else if (idx === k) b.classList.add("wrong");
+        else b.classList.add("dim");
+      });
+      if (good){ okN++; addScore(ai, 10); } else fail(q.term);
+      if (q.reveal) q.reveal();
+      $("#fb").className = "fb " + (good ? "good" : "bad");
+      $("#fb").innerHTML = (good ? "<b>¡Correcto! +10</b> · " : "<b>Casi.</b> ") + q.expl;
+      var last = (n === items.length-1);
+      $("#nx").innerHTML = '<button class="btn btn-primary" id="next">'+(last ? "Terminar →" : "Siguiente →")+'</button>';
+      $("#next").onclick = function(){ n++; if (n < items.length) show(); else actDone(ai, 'Acertaste '+okN+' de '+items.length+' preguntas.'); };
+      $("#next").focus();
+    }
+    Array.prototype.forEach.call(btns, function(b){ b.onclick = function(){ pick(+b.dataset.k); }; });
+    S.keyH = function(e){
+      if (!done && /^[1-9]$/.test(e.key) && +e.key <= q.opts.length) pick(+e.key - 1);
+      else if (done && e.key === "Enter"){ var nb = $("#next"); if (nb) nb.click(); }
+    };
+  }
+  show();
+}
+
+function mix10(){
+  var a = shuffle(TERMS.filter(function(x){ return x.f==="alta"; })).slice(0,5);
+  var b = shuffle(TERMS.filter(function(x){ return x.f==="baja"; })).slice(0,5);
+  return shuffle(a.concat(b));
+}
+
+/* ================== ACTIVIDAD 2 · EL INTRUSO ======================== */
+function act2(){
+  function pickIntruso(x){
+    var fam = [x.t].concat(x.s), tk = {};
+    fam.forEach(function(w){ toks(w).forEach(function(k){ tk[k] = 1; }); });
+    function ok(c){ return !toks(c.w).some(function(k){ return tk[k]; }); }
+    var partner = [];
+    (CONFMAP[x.t] || []).forEach(function(nm){ var y = BYNAME[nm]; [y.t].concat(y.s).forEach(function(w){ partner.push({w:w, from:y.t}); }); });
+    partner = shuffle(partner).filter(ok);
+    var others = [];
+    TERMS.forEach(function(y){ if (y !== x) [y.t].concat(y.s).forEach(function(w){ others.push({w:w, from:y.t}); }); });
+    others = shuffle(others).filter(ok);
+    return (partner.length && Math.random() < 0.7) ? partner[0] : others[0];
+  }
+  runQuiz(1, mix10(), function(x){
+    var it = pickIntruso(x), fam = [x.t].concat(x.s);
+    var opts = shuffle(fam.concat([it.w]));
+    return {
+      prompt: '<div class="sentence">Tres de estas palabras significan lo mismo. <b>¿Cuál NO pertenece a la familia?</b></div>',
+      opts: opts, correct: opts.indexOf(it.w), grid: true, term: x.t,
+      expl: '«'+esc(it.w)+'» es sinónimo de <b>'+esc(it.from)+'</b>. La familia de <b>'+esc(x.t)+'</b> es: '+fam.map(esc).join(" · ")+'.'
+    };
+  }, 'Tres palabras son sinónimos del mismo concepto y una es la intrusa. <b>Encuéntrala</b> (también puedes usar las teclas 1 a 4). 10 puntos cada una.');
+}
+
+/* ================ ACTIVIDAD 3 · COMPLETA LA FRASE =================== */
+function act3(){
+  runQuiz(2, mix10(), function(x){
+    var opts = shuffle([x.t].concat(x.d));
+    return {
+      prompt: '<div class="sentence">'+esc(x.ej).replace("___", '<span class="blank" id="blank">'+esc(x.t)+'</span>')+'</div>',
+      opts: opts, correct: opts.indexOf(x.t), term: x.t,
+      reveal: function(){ $("#blank").classList.add("on"); },
+      expl: 'Es <b>'+esc(x.t)+'</b> (sinónimos: '+x.s.map(esc).join(", ")+').'
+    };
+  }, 'Lee la situación y elige el <b>término correcto</b> de la hoja de cálculo para completar la frase. 10 puntos cada una.');
+}
+
+/* ================ ACTIVIDAD 4 · ADIVINA EL TÉRMINO ================== */
+function act4(){
+  var items = shuffle(
+    shuffle(TERMS.filter(function(x){ return x.f==="alta"; })).slice(0,4)
+    .concat(shuffle(TERMS.filter(function(x){ return x.f==="baja"; })).slice(0,4)));
+  var n = 0, okN = 0, PTS = {1:15, 2:10, 3:5};
+
+  function stripArt(s){ return s.replace(/^(el|la|los|las|un|una)\s+/, ""); }
+  function check(inp, t){
+    var a = stripArt(norm(inp)), b = norm(t);
+    if (!a) return 0; if (a === b) return 2;
+    if (b.length >= 5 && lev(a,b) <= 1) return 1; return 0;
+  }
+
+  function show(){
+    var x = items[n], clues = 1, finished = false, tries3 = 0;
+    view(head(3, 'Te doy los <b>sinónimos</b> como pistas: escribe el <b>término</b> al que pertenecen. Con la pista 1 ganas 15 puntos, con la 2 ganas 10 y con la 3 ganas 5.')
+      + '<div class="qmeta">Término '+(n+1)+' / '+items.length+'</div>'
+      + '<div class="pbar"><i style="width:'+(n/items.length*100)+'%"></i></div>'
+      + '<div class="clues" id="clues"></div>'
+      + '<form class="ansrow" id="f" autocomplete="off"><input id="ans" type="text" placeholder="Escribe el término…" aria-label="Tu respuesta" autocapitalize="off" spellcheck="false"><button class="btn btn-primary" style="margin:0;width:auto" type="submit">Responder</button></form>'
+      + '<div class="ansrow2"><button class="btn btn-ghost" id="more" type="button">Pedir otra pista</button><button class="btn btn-ghost" id="skip" type="button">Pasar</button></div>'
+      + '<div class="fb" id="fb" aria-live="polite"></div><div id="nx"></div>');
+
+    function draw(){
+      var h = "";
+      h += '<div class="clue"><small>Pista 1 · Sinónimo</small>'+esc(x.s[0])+'</div>';
+      h += clues >= 2 ? '<div class="clue"><small>Pista 2 · Otro sinónimo</small>'+esc(x.s[1])+'</div>' : '<div class="clue locked"><small>Pista 2</small>🔒 bloqueada</div>';
+      h += clues >= 3 ? '<div class="clue"><small>Pista 3 · Así empieza</small><span class="mask">'+esc(mask(x.t))+'</span></div>' : '<div class="clue locked"><small>Pista 3</small>🔒 bloqueada</div>';
+      $("#clues").innerHTML = h;
+      $("#more").disabled = clues >= 3 || finished;
+    }
+    function end(good, pts, near){
+      finished = true;
+      $("#ans").disabled = true; $("#more").disabled = true; $("#skip").disabled = true;
+      $("#f").querySelector("button").disabled = true;
+      if (good){ okN++; addScore(3, pts); } else fail(x.t);
+      $("#fb").className = "fb " + (good ? "good" : "bad");
+      $("#fb").innerHTML = (good ? '<b>¡Correcto! +'+pts+'</b>' + (near ? ' (ojo con la ortografía: se escribe <b>'+esc(x.t)+'</b>)' : '') : 'La respuesta era <b>'+esc(x.t)+'</b>.')
+        + '<br>Ejemplo: '+esc(fill(x));
+      var last = (n === items.length-1);
+      $("#nx").innerHTML = '<button class="btn btn-primary" id="next">'+(last?"Terminar →":"Siguiente →")+'</button>';
+      $("#next").onclick = function(){ n++; if (n < items.length) show(); else actDone(3, 'Adivinaste '+okN+' de '+items.length+' términos.'); };
+      $("#next").focus();
+      S.keyH = function(e){ if (e.key === "Enter"){ var nb = $("#next"); if (nb) nb.click(); } };
+    }
+    draw(); $("#ans").focus();
+    $("#more").onclick = function(){ if (clues < 3){ clues++; draw(); $("#ans").focus(); } };
+    $("#skip").onclick = function(){ end(false, 0); };
+    $("#f").onsubmit = function(e){
+      e.preventDefault(); if (finished) return;
+      var v = $("#ans").value, r = check(v, x.t);
+      if (!v.trim()) return;
+      if (r) return end(true, PTS[clues], r === 1);
+      if (clues < 3){
+        clues++; draw(); $("#ans").value = ""; $("#ans").focus();
+        $("#fb").className = "fb bad"; $("#fb").textContent = "Todavía no. Te doy otra pista (vale menos puntos).";
+      } else {
+        tries3++;
+        if (tries3 >= 2) return end(false, 0);
+        $("#fb").className = "fb bad"; $("#fb").textContent = "Aún no. Revisa las pistas y prueba una vez más.";
+        $("#ans").select();
+      }
+    };
+  }
+  show();
+}
+
+/* ================== ACTIVIDAD 5 · TU REDACCIÓN ====================== */
+function act5(){
+  var weak = Object.keys(S.fails).sort(function(a,b){ return S.fails[b] - S.fails[a]; }).slice(0,4);
+  var chosen = weak.map(function(nm){ return BYNAME[nm]; });
+  var rest = shuffle(TERMS.filter(function(x){ return weak.indexOf(x.t) < 0; }));
+  while (chosen.length < 4) chosen.push(rest.shift());
+  chosen = shuffle(chosen);
+
+  var rows = chosen.map(function(x,i){
+    return '<div class="wr"><label for="w'+i+'"><b>'+esc(x.t)+'</b> <span>· sinónimos: '+x.s.map(esc).join(", ")+'</span></label>'
+      + '<textarea id="w'+i+'" placeholder="Escribe una oración con «'+esc(x.t)+'» (mínimo 6 palabras)…"></textarea>'
+      + '<div class="st" id="s'+i+'">Aún sin escribir</div></div>';
+  }).join("");
+  view(head(4, 'Escribe <b>una oración con sentido</b> para cada término, como en la producción escrita de la prueba. '
+      + (weak.length ? 'Incluimos algunos que te costaron antes.' : '')
+      + ' Cada oración correcta suma 10 puntos.')
+    + rows
+    + '<button class="btn btn-primary" id="rev">Revisar mis oraciones</button>');
+
+  function analyze(x, text){
+    var words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    var used = termRx(x).test(norm(text));
+    return {words:words, used:used};
+  }
+  chosen.forEach(function(x,i){
+    $("#w"+i).addEventListener("input", function(){
+      var a = analyze(x, this.value), el = $("#s"+i);
+      if (!this.value.trim()){ el.className = "st"; el.textContent = "Aún sin escribir"; return; }
+      var okAll = a.used && a.words >= 6;
+      el.className = "st" + (okAll ? " ok" : "");
+      el.textContent = (a.used ? "✔ usas el término" : "✘ falta el término «"+x.t+"»") + " · " + a.words + " palabra" + (a.words===1?"":"s") + (a.words<6 ? " (mínimo 6)" : "");
+    });
+  });
+
+  $("#rev").onclick = function(){
+    var okN = 0, html = "";
+    chosen.forEach(function(x,i){
+      var txt = $("#w"+i).value, a = analyze(x, txt), pts = 0, cls = "no", msg;
+      if (a.used && a.words >= 6){ pts = 10; cls = "ok"; msg = "✔ Usaste el término y la oración tiene la extensión pedida."; okN++; }
+      else if (a.used){ pts = 5; cls = "mid"; msg = "◐ Usaste el término, pero la oración es muy corta (mínimo 6 palabras)."; fail(x.t); }
+      else { msg = "✘ No aparece el término «"+esc(x.t)+"» en tu oración."; fail(x.t); }
+      addScore(4, pts);
+      html += '<div class="rv '+cls+'"><div class="t">'+esc(x.t)+' · +'+pts+'</div>'
+        + '<div class="mine">'+(txt.trim() ? esc(txt.trim()) : "(sin respuesta)")+'</div>'
+        + '<div>'+msg+'</div><div class="model"><b>Ejemplo:</b> '+esc(fill(x))+'</div></div>';
+    });
+    view(head(4, "Así quedó tu redacción. Compárala con los ejemplos.")
+      + html
+      + '<div class="check"><b>Revisa tú mismo/a:</b><br>☐ ¿Mi oración muestra que entiendo lo que significa el término?<br>☐ ¿Está relacionada con hojas de cálculo o estadística?<br>☐ ¿Cuidé la ortografía, la mayúscula inicial y el punto final?<br><i>La revisión automática solo comprueba el uso del término y la extensión: el sentido lo evalúa tu profesor.</i></div>'
+      + '<button class="btn btn-primary" id="go">Ver mi resultado →</button>');
+    S.keyH = null;
+    $("#go").onclick = function(){ actDone(4, 'Escribiste '+okN+' de 4 oraciones completas.'); };
+    window.scrollTo(0,0);
+  };
+}
+
+/* ============================ RESULTADO ============================= */
+function finish(){
+  clearInterval(S.iv); S.cur = 5; S.keyH = null; updateTop(); tick();
+  var tot = sum(S.scores), mx = sum(ACTS.map(function(a){ return a.max; })), pct = Math.round(tot/mx*100);
+  var secs = Math.floor((Date.now()-S.t0)/1000);
+  var msg = pct >= 85 ? "¡Nivel experto en datos! Dominas el vocabulario." : pct >= 65 ? "¡Muy buen trabajo! Repasa los términos marcados y estarás listo/a." : pct >= 40 ? "Vas por buen camino. Repasa los términos de abajo y vuelve a intentarlo." : "Es normal al comienzo. Repasa los términos de abajo y juega otra vez.";
+  var weak = Object.keys(S.fails).sort(function(a,b){ return S.fails[b]-S.fails[a]; });
+  var colors = ["var(--blue)","var(--green)","var(--amber)","var(--red)","var(--blue)"];
+  var bars = ACTS.map(function(a,i){
+    return '<div><div class="lbl"><span>'+esc(a.n)+'</span><b>'+S.scores[i]+'/'+a.max+'</b></div><div class="pbar big"><i style="width:'+Math.round(S.scores[i]/a.max*100)+'%;background:'+colors[i]+'"></i></div></div>';
+  }).join("");
+  var rev = weak.length ? weak.slice(0,12).map(function(nm){
+    var x = BYNAME[nm];
+    return '<div class="review-item"><span class="term">'+esc(x.t)+'</span> <span class="mono" style="font-size:11px;color:var(--text-muted)">×'+S.fails[nm]+'</span><div class="desc">Sinónimos: '+x.s.map(esc).join(" · ")+'</div></div>';
+  }).join("") : '<div class="review-item"><div class="desc">¡No cometiste errores! 🎉</div></div>';
+
+  view('<span class="eyebrow"><span class="dot"></span> Resultado final</span>'
+    + '<div class="done-box"><div class="done-score">'+tot+'<span>/ '+mx+' puntos · '+pct+' %</span></div><div class="extra">'+msg+'<br>'+(S.name ? esc(S.name)+' · ' : '')+(S.curso ? esc(S.curso)+' · ' : '')+'Tiempo: '+mmss(secs)+'</div></div>'
+    + '<div class="bars">'+bars+'</div>'
+    + '<h3 style="margin-top:24px;font-size:14px;color:var(--text-muted)">Términos para reforzar</h3><div class="review-list">'+rev+'</div>'
+    + '<div class="result-actions"><button class="btn btn-ghost" id="copy">📋 Copiar mi resultado</button><button class="btn btn-ghost" id="again">🔁 Jugar de nuevo</button></div>'
+    + '<div class="fb" id="fb" aria-live="polite"></div>');
+
+  var txt = "Misión Vocabulario 7° Octubre · " + (S.name || "Sin nombre") + (S.curso ? " · " + S.curso : "")
+    + "\nPuntaje: " + tot + "/" + mx + " (" + pct + " %) · Tiempo: " + mmss(secs)
+    + "\nPor reforzar: " + (weak.length ? weak.slice(0,12).join(", ") : "ninguno");
+  $("#copy").onclick = function(){
+    function ok(){ $("#fb").className = "fb good"; $("#fb").textContent = "¡Copiado! Puedes pegarlo donde tu profesor te indique."; }
+    function fallback(){
+      var ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); ok(); } catch(e){ $("#fb").textContent = txt; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, fallback); else fallback();
+  };
+  $("#again").onclick = function(){ var nm = S.name, cu = S.curso; newState(); updateTop(); intro(); $("#in-nombre").value = nm; $("#in-curso").value = cu; };
+}
+
+intro();
+})();
+</script>
+</body>
+</html>
