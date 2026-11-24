@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso 2 · Prueba Sumativa · Hoja de cálculo y tablas de frecuencia · 7° básico</title>
+<style>
+  :root {
+    color-scheme: light;
+    --azul: #1F4E79;
+    --azul-claro: #eaf1f8;
+    --serie: #2a78d6;
+    --ok: #0f7a4d;
+    --ok-fondo: #e8f6ef;
+    --mal: #b3261e;
+    --mal-fondo: #fdecea;
+    --tinta: #11181c;
+    --suave: #5a6672;
+    --linea: #d7dbdf;
+    --fondo: #f4f6f8;
+    --tarjeta: #ffffff;
+    --fuente: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fondo); color: var(--tinta);
+    font-family: var(--fuente); font-size: 17px; line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+  .envoltura { max-width: 760px; margin: 0 auto; padding: 0 16px 80px; }
+
+  header.top { background: var(--azul); color: #fff; padding: 22px 0 18px; }
+  header.top .envoltura { padding-bottom: 0; }
+  header.top h1 { font-size: 1.35rem; margin: 0 0 4px; line-height: 1.25; }
+  header.top p { margin: 0; opacity: .85; font-size: .95rem; }
+
+  .barra {
+    position: sticky; top: 0; z-index: 20; background: #fff;
+    border-bottom: 1px solid var(--linea); box-shadow: 0 1px 6px rgba(0,0,0,.05);
+  }
+  .barra .envoltura { display: flex; align-items: center; gap: 14px; padding: 10px 16px; }
+  .pista { flex: 1; height: 8px; background: var(--linea); border-radius: 99px; overflow: hidden; }
+  .relleno { height: 100%; width: 0; background: var(--serie); border-radius: 99px;
+             transition: width .25s ease; }
+  .marcador { font-size: .9rem; color: var(--suave); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .intro {
+    background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 14px;
+    padding: 18px 20px; margin: 20px 0 8px;
+  }
+  .intro h2 { margin: 0 0 8px; font-size: 1.05rem; }
+  .intro ul { margin: 8px 0 0; padding-left: 20px; }
+  .intro li { margin-bottom: 4px; }
+
+  .eje { margin-top: 34px; scroll-margin-top: 70px; }
+  .eje-cab { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+  .eje-letra {
+    flex: none; width: 34px; height: 34px; border-radius: 9px; background: var(--azul);
+    color: #fff; font-weight: 700; display: grid; place-items: center;
+  }
+  .eje-cab h2 { margin: 2px 0 2px; font-size: 1.1rem; }
+  .eje-cab p { margin: 0; color: var(--suave); font-size: .92rem; }
+
+  .q {
+    background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 14px;
+    padding: 18px 18px 14px; margin-bottom: 16px; scroll-margin-top: 70px;
+  }
+  .q-cab { display: flex; gap: 12px; align-items: flex-start; }
+  .num {
+    flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--azul-claro);
+    color: var(--azul); font-weight: 700; display: grid; place-items: center; font-size: .95rem;
+  }
+  .q-cab h3 { margin: 2px 0 0; font-size: 1.02rem; font-weight: 600; line-height: 1.4; }
+
+  .fig { margin: 14px 0 4px; }
+  svg.grafico { width: 100%; height: auto; display: block;
+                 border: 1px solid var(--linea); border-radius: 10px; }
+
+  table { border-collapse: collapse; font-size: .97rem; width: auto; min-width: min(100%, 320px); }
+  table caption { text-align: left; color: var(--suave); font-size: .9rem; padding-bottom: 6px; }
+  th, td { border: 1px solid var(--linea); padding: 7px 14px; text-align: center; }
+  thead th, thead td { background: var(--azul-claro); color: var(--azul); font-weight: 600; }
+  tbody th { text-align: left; font-weight: 500; background: #fafbfc; }
+  tbody tr.total th, tbody tr.total td { font-weight: 700; background: #f0f3f6; }
+  .hoja .esquina { background: var(--azul-claro); }
+  .hoja .celda-num { text-align: center; color: var(--suave); background: var(--azul-claro);
+                      font-weight: 600; width: 44px; }
+  .fig { overflow-x: auto; }
+
+  .opts { display: grid; gap: 8px; margin-top: 14px; }
+  .opt {
+    display: flex; gap: 11px; align-items: flex-start; width: 100%; min-height: 48px;
+    text-align: left; font: inherit; color: inherit; cursor: pointer;
+    background: #fff; border: 1.5px solid var(--linea); border-radius: 11px; padding: 10px 13px;
+    transition: border-color .12s, background .12s;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--serie); background: #f7fbff; }
+  .opt:focus-visible { outline: 3px solid var(--serie); outline-offset: 2px; }
+  .opt .chip {
+    flex: none; width: 26px; height: 26px; border-radius: 7px; background: #eef1f4;
+    color: var(--suave); font-weight: 700; display: grid; place-items: center; font-size: .9rem;
+  }
+  .opt .txt { padding-top: 1px; }
+  .q.resuelta .opt { cursor: default; }
+  .opt.buena { border-color: var(--ok); background: var(--ok-fondo); }
+  .opt.buena .chip { background: var(--ok); color: #fff; }
+  .opt.mala { border-color: var(--mal); background: var(--mal-fondo); }
+  .opt.mala .chip { background: var(--mal); color: #fff; }
+  .opt.apagada { opacity: .62; }
+
+  .fb { margin-top: 14px; border-left: 4px solid var(--serie); background: #f7fafd;
+         border-radius: 0 10px 10px 0; padding: 12px 14px; }
+  .q.correcta .fb { border-left-color: var(--ok); background: var(--ok-fondo); }
+  .q.incorrecta .fb { border-left-color: var(--mal); background: #fff7f6; }
+  .veredicto { margin: 0 0 6px; font-weight: 700; }
+  .q.correcta .veredicto { color: var(--ok); }
+  .q.incorrecta .veredicto { color: var(--mal); }
+  .error-nota { margin: 0 0 6px; font-size: .95rem; color: var(--mal); }
+  .expl { margin: 0; }
+  .honesto { margin-top: 12px; }
+  .honesto-t { margin: 0 0 6px; font-size: .93rem; color: var(--suave); }
+  .retry {
+    margin-top: 10px; font: inherit; font-size: .92rem; color: var(--azul); background: none;
+    border: 1px solid var(--linea); border-radius: 8px; padding: 6px 12px; cursor: pointer;
+  }
+  .retry:hover { background: #fff; border-color: var(--azul); }
+
+  .resultado {
+    background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 14px;
+    padding: 22px 20px; margin-top: 30px; scroll-margin-top: 70px;
+  }
+  .puntaje { margin: 6px 0 10px; display: flex; align-items: baseline; gap: 10px; }
+  .puntaje strong { font-size: 2.7rem; font-weight: 700; line-height: 1; color: var(--azul); }
+  .puntaje span { font-size: 1.05rem; color: var(--suave); }
+  .resultado h2 { margin: 0 0 10px; font-size: 1.15rem; }
+  .resumen-ejes { list-style: none; margin: 16px 0 0; padding: 0; }
+  .resumen-ejes li { display: flex; justify-content: space-between; gap: 12px;
+                      padding: 7px 0; border-top: 1px solid var(--linea); font-size: .96rem; }
+  .fallos { margin: 16px 0 0; padding-left: 20px; }
+  .fallos a { color: var(--azul); }
+  .acciones { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    font: inherit; border-radius: 10px; padding: 10px 16px; cursor: pointer;
+    border: 1.5px solid var(--azul); background: var(--azul); color: #fff;
+  }
+  .btn.sec { background: #fff; color: var(--azul); }
+  footer.pie { color: var(--suave); font-size: .88rem; margin-top: 26px; text-align: center; }
+  @media (max-width: 480px) {
+    body { font-size: 16px; }
+    .q { padding: 15px 14px 12px; }
+    th, td { padding: 6px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="envoltura">
+    <h1>Repaso 2 · Prueba Sumativa</h1>
+    <p>Hoja de cálculo y tablas de frecuencia · 7° básico · Habilidades Digitales</p>
+  </div>
+</header>
+
+<div class="barra">
+  <div class="envoltura">
+    <div class="pista"><div class="relleno" id="relleno"></div></div>
+    <div class="marcador" id="marcador">0 de 15 respondidas</div>
+  </div>
+</div>
+
+<main class="envoltura">
+
+  <div class="intro">
+    <h2>Cómo funciona</h2>
+    <p>Son 15 preguntas con las mismas secciones y el mismo nivel que la prueba.
+       Apenas eliges una alternativa te digo si está bien y por qué. <strong>No lleva nota</strong>
+       y puedes repetirlo las veces que quieras.</p>
+    <ul>
+      <li>Hazlo <strong>sin calculadora</strong>: todos los cálculos salen a mano o de memoria.</li>
+      <li>Si te equivocas, lee la explicación antes de pasar a la siguiente.</li>
+      <li>Ten al lado tu cuaderno y las hojas de cálculo de las clases.</li>
+    </ul>
+  </div>
+
+<section class="eje" aria-labelledby="eje-A"><div class="eje-cab"><span class="eje-letra">A</span><div><h2 id="eje-A">La hoja de cálculo</h2><p>Celdas, rangos con dos puntos y el signo = que convierte el texto en fórmula.</p></div></div>
+<article class="q" id="p1" data-n="1" data-ok="D" data-eje="A. La hoja de cálculo"><div class="q-cab"><span class="num">1</span><h3>Seleccionas desde A2 hasta A10 y la hoja marca nueve recuadros. ¿Cómo se llama cada uno de esos recuadros por separado?</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 1"><button type="button" class="opt" data-l="A" data-ok="0" data-err="así se llama el conjunto de las nueve, no cada una" aria-pressed="false"><span class="chip">A</span><span class="txt">Rango</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="la hoja es la página completa, no un recuadro" aria-pressed="false"><span class="chip">B</span><span class="txt">Hoja</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="la fórmula es lo que se escribe dentro de una celda" aria-pressed="false"><span class="chip">C</span><span class="txt">Fórmula</span></button><button type="button" class="opt" data-l="D" data-ok="1" data-err="" aria-pressed="false"><span class="chip">D</span><span class="txt">Celda</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">Cada recuadro es una celda y se nombra con su columna y su fila. Los nueve juntos forman un rango: A2:A10.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p2" data-n="2" data-ok="A" data-eje="A. La hoja de cálculo"><div class="q-cab"><span class="num">2</span><h3>La celda F7 está en…</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 2"><button type="button" class="opt" data-l="A" data-ok="1" data-err="" aria-pressed="false"><span class="chip">A</span><span class="txt">la columna F y la fila 7</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="invierte: cree que la letra es la fila" aria-pressed="false"><span class="chip">B</span><span class="txt">la fila F y la columna 7</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="confunde la fila con la pestaña de la hoja" aria-pressed="false"><span class="chip">C</span><span class="txt">la séptima hoja del archivo</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="invierte además el orden en que se leen" aria-pressed="false"><span class="chip">D</span><span class="txt">la columna 7 y la fila F</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">En el nombre de una celda, la letra es siempre la columna y el número es siempre la fila: F7 está en la columna F, fila 7.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p3" data-n="3" data-ok="C" data-eje="A. La hoja de cálculo"><div class="q-cab"><span class="num">3</span><h3>Dentro de una fórmula, ¿qué diferencia hay entre escribir C2:C7 y escribir C2;C7?</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 3"><button type="button" class="opt" data-l="A" data-ok="0" data-err="cree que los dos separadores significan lo mismo" aria-pressed="false"><span class="chip">A</span><span class="txt">No hay diferencia: las dos formas toman las seis celdas</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="invierte el significado de los dos separadores" aria-pressed="false"><span class="chip">B</span><span class="txt">C2;C7 toma las seis celdas y C2:C7 toma solo la primera y la última</span></button><button type="button" class="opt" data-l="C" data-ok="1" data-err="" aria-pressed="false"><span class="chip">C</span><span class="txt">C2:C7 toma las seis celdas seguidas; C2;C7 toma solo esas dos</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="inventa una diferencia según el tipo de dato" aria-pressed="false"><span class="chip">D</span><span class="txt">Los dos puntos sirven para números y el punto y coma para texto</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">Los dos puntos arman un rango continuo: toman C2, C3, C4, C5, C6 y C7. El punto y coma separa argumentos sueltos: toma solamente C2 y C7, y deja fuera las cuatro celdas del medio.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+</section>
+<section class="eje" aria-labelledby="eje-B"><div class="eje-cab"><span class="eje-letra">B</span><div><h2 id="eje-B">Funciones básicas</h2><p>SUMA, MAX, MIN, PROMEDIO y CONTAR, y la diferencia entre los dos puntos y el punto y coma.</p></div></div>
+<article class="q" id="p4" data-n="4" data-ok="B" data-eje="B. Funciones básicas"><div class="q-cab"><span class="num">4</span><h3>La tabla muestra cuántas respuestas correctas tuvo cada uno de los seis estudiantes en un quiz. ¿Qué resultado entrega la fórmula =MIN(C2:C7)?</h3></div><figure class="fig"><table class="hoja"><thead><tr><td class="esquina"></td><th scope="col">C</th></tr></thead><tbody><tr><th scope="row" class="celda-num">1</th><td>Correctas</td></tr><tr><th scope="row" class="celda-num">2</th><td>5</td></tr><tr><th scope="row" class="celda-num">3</th><td>9</td></tr><tr><th scope="row" class="celda-num">4</th><td>3</td></tr><tr><th scope="row" class="celda-num">5</th><td>8</td></tr><tr><th scope="row" class="celda-num">6</th><td>6</td></tr><tr><th scope="row" class="celda-num">7</th><td>5</td></tr></tbody></table></figure><div class="opts" role="group" aria-label="Alternativas de la pregunta 4"><button type="button" class="opt" data-l="A" data-ok="0" data-err="confunde MIN con MAX" aria-pressed="false"><span class="chip">A</span><span class="txt">9</span></button><button type="button" class="opt" data-l="B" data-ok="1" data-err="" aria-pressed="false"><span class="chip">B</span><span class="txt">3</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="entrega el primer dato de la columna en vez del menor" aria-pressed="false"><span class="chip">C</span><span class="txt">5</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="cree que MIN entrega siempre cero cuando no hay celdas vacías" aria-pressed="false"><span class="chip">D</span><span class="txt">0</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">MIN entrega el menor valor del rango: 3.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p5" data-n="5" data-ok="D" data-eje="B. Funciones básicas"><div class="q-cab"><span class="num">5</span><h3>La profesora quiere saber cuántos estudiantes entregaron el quiz, y no cuántos puntos sumaron entre todos. ¿Qué función necesita?</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 5"><button type="button" class="opt" data-l="A" data-ok="0" data-err="entrega el total de los valores, no cuántos son" aria-pressed="false"><span class="chip">A</span><span class="txt">SUMA</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="entrega el mayor valor, no cuántos datos hay" aria-pressed="false"><span class="chip">B</span><span class="txt">MAX</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="entrega el valor medio, no cuántos datos hay" aria-pressed="false"><span class="chip">C</span><span class="txt">PROMEDIO</span></button><button type="button" class="opt" data-l="D" data-ok="1" data-err="" aria-pressed="false"><span class="chip">D</span><span class="txt">CONTAR</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">CONTAR responde «cuántos son». SUMA responde «cuánto suman». Son preguntas distintas.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p6" data-n="6" data-ok="A" data-eje="B. Funciones básicas"><div class="q-cab"><span class="num">6</span><h3>Con los mismos datos, un estudiante escribe =SUMA(C1:C7) y parte el rango desde el título de la columna. ¿Qué resultado obtiene?</h3></div><figure class="fig"><table class="hoja"><thead><tr><td class="esquina"></td><th scope="col">C</th></tr></thead><tbody><tr><th scope="row" class="celda-num">1</th><td>Correctas</td></tr><tr><th scope="row" class="celda-num">2</th><td>5</td></tr><tr><th scope="row" class="celda-num">3</th><td>9</td></tr><tr><th scope="row" class="celda-num">4</th><td>3</td></tr><tr><th scope="row" class="celda-num">5</th><td>8</td></tr><tr><th scope="row" class="celda-num">6</th><td>6</td></tr><tr><th scope="row" class="celda-num">7</th><td>5</td></tr></tbody></table></figure><div class="opts" role="group" aria-label="Alternativas de la pregunta 6"><button type="button" class="opt" data-l="A" data-ok="1" data-err="" aria-pressed="false"><span class="chip">A</span><span class="txt">36, el mismo resultado, porque SUMA ignora la celda con texto</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="cree que la hoja rechaza la fórmula, cuando en realidad la calcula" aria-pressed="false"><span class="chip">B</span><span class="txt">Un mensaje de error, porque el rango incluye una celda con texto</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="supone que el texto suma 1" aria-pressed="false"><span class="chip">C</span><span class="txt">37, porque cuenta el título como un dato más</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="confunde SUMA con CONTAR" aria-pressed="false"><span class="chip">D</span><span class="txt">6, porque solo alcanza a contar los datos</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">SUMA ignora las celdas con texto, así que el título «Correctas» no estorba: el resultado es el mismo, 36. Ojo con la diferencia: CONTAR también ignora el texto, pero por eso mismo cuenta 6 y no 7.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p7" data-n="7" data-ok="C" data-eje="B. Funciones básicas"><div class="q-cab"><span class="num">7</span><h3>Con los mismos datos, ¿qué resultado entrega la fórmula =PROMEDIO(C2:C7)?</h3></div><figure class="fig"><table class="hoja"><thead><tr><td class="esquina"></td><th scope="col">C</th></tr></thead><tbody><tr><th scope="row" class="celda-num">1</th><td>Correctas</td></tr><tr><th scope="row" class="celda-num">2</th><td>5</td></tr><tr><th scope="row" class="celda-num">3</th><td>9</td></tr><tr><th scope="row" class="celda-num">4</th><td>3</td></tr><tr><th scope="row" class="celda-num">5</th><td>8</td></tr><tr><th scope="row" class="celda-num">6</th><td>6</td></tr><tr><th scope="row" class="celda-num">7</th><td>5</td></tr></tbody></table></figure><div class="opts" role="group" aria-label="Alternativas de la pregunta 7"><button type="button" class="opt" data-l="A" data-ok="0" data-err="entrega la suma sin dividir" aria-pressed="false"><span class="chip">A</span><span class="txt">36</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="entrega el valor que más se repite en vez del promedio" aria-pressed="false"><span class="chip">B</span><span class="txt">5</span></button><button type="button" class="opt" data-l="C" data-ok="1" data-err="" aria-pressed="false"><span class="chip">C</span><span class="txt">6</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="divide por 5 en vez de 6 y deja un dato fuera de la cuenta" aria-pressed="false"><span class="chip">D</span><span class="txt">7,2</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">PROMEDIO suma los datos y divide por la cantidad: 5 + 9 + 3 + 8 + 6 + 5 = 36, y 36 ÷ 6 = 6.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p8" data-n="8" data-ok="B" data-eje="B. Funciones básicas"><div class="q-cab"><span class="num">8</span><h3>Con los mismos datos, quieres mostrar en una celda la diferencia entre el mejor y el peor resultado del quiz. ¿Qué fórmula escribes?</h3></div><figure class="fig"><table class="hoja"><thead><tr><td class="esquina"></td><th scope="col">C</th></tr></thead><tbody><tr><th scope="row" class="celda-num">1</th><td>Correctas</td></tr><tr><th scope="row" class="celda-num">2</th><td>5</td></tr><tr><th scope="row" class="celda-num">3</th><td>9</td></tr><tr><th scope="row" class="celda-num">4</th><td>3</td></tr><tr><th scope="row" class="celda-num">5</th><td>8</td></tr><tr><th scope="row" class="celda-num">6</th><td>6</td></tr><tr><th scope="row" class="celda-num">7</th><td>5</td></tr></tbody></table></figure><div class="opts" role="group" aria-label="Alternativas de la pregunta 8"><button type="button" class="opt" data-l="A" data-ok="0" data-err="suma en vez de restar" aria-pressed="false"><span class="chip">A</span><span class="txt">=MAX(C2:C7)+MIN(C2:C7)</span></button><button type="button" class="opt" data-l="B" data-ok="1" data-err="" aria-pressed="false"><span class="chip">B</span><span class="txt">=MAX(C2:C7)-MIN(C2:C7)</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="usa la suma de todos los datos en vez del máximo" aria-pressed="false"><span class="chip">C</span><span class="txt">=SUMA(C2:C7)-MIN(C2:C7)</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="resta la cantidad de datos en vez del mínimo" aria-pressed="false"><span class="chip">D</span><span class="txt">=MAX(C2:C7)-CONTAR(C2:C7)</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">Rango = MAX − MIN = 9 − 3 = 6. Se pueden combinar dos funciones en una misma fórmula.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+</section>
+<section class="eje" aria-labelledby="eje-C"><div class="eje-cab"><span class="eje-letra">C</span><div><h2 id="eje-C">CONTAR.SI</h2><p>Contar cuántas veces aparece una categoría: el orden rango; criterio y las comillas.</p></div></div>
+<article class="q" id="p9" data-n="9" data-ok="D" data-eje="C. CONTAR.SI"><div class="q-cab"><span class="num">9</span><h3>En la columna A hay 30 respuestas escritas como «Manzana», «Plátano», «Naranja» o «Uva». ¿Qué hace CONTAR.SI con esa columna?</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 9"><button type="button" class="opt" data-l="A" data-ok="0" data-err="describe lo que hace SUMAR.SI, y además la columna no tiene números" aria-pressed="false"><span class="chip">A</span><span class="txt">Suma los números de la columna que cumplen una condición</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="confunde contar con ordenar" aria-pressed="false"><span class="chip">B</span><span class="txt">Ordena las respuestas de la A a la Z</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="confunde CONTAR.SI con PROMEDIO, y un promedio de palabras no existe" aria-pressed="false"><span class="chip">C</span><span class="txt">Calcula el promedio de las respuestas</span></button><button type="button" class="opt" data-l="D" data-ok="1" data-err="" aria-pressed="false"><span class="chip">D</span><span class="txt">Cuenta cuántas veces aparece la categoría que le indiques</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">CONTAR.SI cuenta las celdas del rango que coinciden con el criterio que le indiques. Por eso sirve para armar la columna f de una tabla de frecuencias.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p10" data-n="10" data-ok="A" data-eje="C. CONTAR.SI"><div class="q-cab"><span class="num">10</span><h3>La columna A registra la fruta preferida de los 30 estudiantes del curso. En la fórmula =CONTAR.SI(A2:A31;&quot;Uva&quot;), ¿cuál es el rango, es decir, dónde va a buscar la función?</h3></div><figure class="fig"><table class="datos"><caption>Fruta preferida del curso (30 estudiantes)</caption><thead><tr><th scope="col">Fruta</th><th scope="col">f</th></tr></thead><tbody><tr><th scope="row">Manzana</th><td>11</td></tr><tr><th scope="row">Plátano</th><td>8</td></tr><tr><th scope="row">Naranja</th><td>7</td></tr><tr><th scope="row">Uva</th><td>4</td></tr><tr class="total"><th scope="row">Total</th><td>30</td></tr></tbody></table></figure><div class="opts" role="group" aria-label="Alternativas de la pregunta 10"><button type="button" class="opt" data-l="A" data-ok="1" data-err="" aria-pressed="false"><span class="chip">A</span><span class="txt">A2:A31</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="ese es el criterio: dice qué buscar, no dónde buscar" aria-pressed="false"><span class="chip">B</span><span class="txt">&quot;Uva&quot;</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="ese es el separador entre el rango y el criterio" aria-pressed="false"><span class="chip">C</span><span class="txt">El punto y coma ( ; )</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="ese es el nombre de la función" aria-pressed="false"><span class="chip">D</span><span class="txt">CONTAR.SI</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">La fórmula se lee =CONTAR.SI(rango; criterio). El rango A2:A31 dice dónde buscar y el criterio &quot;Uva&quot; dice qué buscar.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p11" data-n="11" data-ok="C" data-eje="C. CONTAR.SI"><div class="q-cab"><span class="num">11</span><h3>Ya armaste la tabla con CONTAR.SI y te das cuenta de que una respuesta estaba mal escrita. La corriges en la columna A. ¿Qué pasa con la tabla?</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 11"><button type="button" class="opt" data-l="A" data-ok="0" data-err="cree que la fórmula guarda un número fijo y no un cálculo" aria-pressed="false"><span class="chip">A</span><span class="txt">Hay que volver a contar a mano y escribir de nuevo la f</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="desconoce que la fórmula se recalcula al cambiar los datos" aria-pressed="false"><span class="chip">B</span><span class="txt">No pasa nada, porque la fórmula guarda el resultado anterior</span></button><button type="button" class="opt" data-l="C" data-ok="1" data-err="" aria-pressed="false"><span class="chip">C</span><span class="txt">Se actualiza sola: la f de esa categoría cambia sin que tengas que volver a contar</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="cree que corregir un dato rompe las fórmulas" aria-pressed="false"><span class="chip">D</span><span class="txt">Se borra la tabla y hay que escribir otra vez las fórmulas</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">La fórmula queda conectada a los datos: al corregir un dato, la cuenta se recalcula sola. Si hubieras contado a mano, tendrías que empezar de nuevo.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+</section>
+<section class="eje" aria-labelledby="eje-D"><div class="eje-cab"><span class="eje-letra">D</span><div><h2 id="eje-D">Tabla de frecuencia absoluta</h2><p>Leer la columna f, encontrar la moda, completar un dato que falta y usar el total como control.</p></div></div>
+<article class="q" id="p12" data-n="12" data-ok="B" data-eje="D. Tabla de frecuencia absoluta"><div class="q-cab"><span class="num">12</span><h3>En la tabla, ¿qué indica el número 8 que está en la fila Plátano?</h3></div><figure class="fig"><table class="datos"><caption>Fruta preferida del curso (30 estudiantes)</caption><thead><tr><th scope="col">Fruta</th><th scope="col">f</th></tr></thead><tbody><tr><th scope="row">Manzana</th><td>11</td></tr><tr><th scope="row">Plátano</th><td>8</td></tr><tr><th scope="row">Naranja</th><td>7</td></tr><tr><th scope="row">Uva</th><td>4</td></tr><tr class="total"><th scope="row">Total</th><td>30</td></tr></tbody></table></figure><div class="opts" role="group" aria-label="Alternativas de la pregunta 12"><button type="button" class="opt" data-l="A" data-ok="0" data-err="lee la frecuencia como si fuera un número de orden" aria-pressed="false"><span class="chip">A</span><span class="txt">Que el plátano es la octava opción de la lista</span></button><button type="button" class="opt" data-l="B" data-ok="1" data-err="" aria-pressed="false"><span class="chip">B</span><span class="txt">Que 8 estudiantes prefieren el plátano</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="invierte el significado de la frecuencia" aria-pressed="false"><span class="chip">C</span><span class="txt">Que 8 estudiantes NO prefieren el plátano</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="inventa una unidad que la tabla no mide" aria-pressed="false"><span class="chip">D</span><span class="txt">Que hay 8 plátanos para repartir en el curso</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">La frecuencia absoluta f indica cuántas veces se repite esa categoría: 8 estudiantes respondieron Plátano.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p13" data-n="13" data-ok="A" data-eje="D. Tabla de frecuencia absoluta"><div class="q-cab"><span class="num">13</span><h3>Dos cursos hicieron la misma encuesta. En el 7°C la fruta con la f más alta es la manzana, con 11, y en el 7°D es el plátano, con 9. ¿Cuál es la moda en cada curso?</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 13"><button type="button" class="opt" data-l="A" data-ok="1" data-err="" aria-pressed="false"><span class="chip">A</span><span class="txt">Manzana en el 7°C y plátano en el 7°D</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="entrega la frecuencia de la moda en vez de la categoría" aria-pressed="false"><span class="chip">B</span><span class="txt">11 en el 7°C y 9 en el 7°D</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="compara cursos distintos en vez de mirar cada tabla por separado" aria-pressed="false"><span class="chip">C</span><span class="txt">Manzana en los dos, porque 11 es mayor que 9</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="cree que hace falta más información de la que ya da el enunciado" aria-pressed="false"><span class="chip">D</span><span class="txt">No se puede saber sin ver la tabla completa</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">La moda es la categoría que tiene la mayor frecuencia, no el número de la columna f: manzana en el 7°C y plátano en el 7°D. Que una f sea mayor que la otra no cambia cuál es la moda de cada curso.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p14" data-n="14" data-ok="C" data-eje="D. Tabla de frecuencia absoluta"><div class="q-cab"><span class="num">14</span><h3>Terminas la tabla y quieres comprobar que no se te escapó ningún dato. ¿Qué tienes que mirar?</h3></div><div class="opts" role="group" aria-label="Alternativas de la pregunta 14"><button type="button" class="opt" data-l="A" data-ok="0" data-err="cuenta las filas en vez de los datos" aria-pressed="false"><span class="chip">A</span><span class="txt">Que haya tantas filas como categorías distintas</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="cree que el total es un número fijo y no depende del grupo encuestado" aria-pressed="false"><span class="chip">B</span><span class="txt">Que la suma de la columna f sea 30, como en toda tabla</span></button><button type="button" class="opt" data-l="C" data-ok="1" data-err="" aria-pressed="false"><span class="chip">C</span><span class="txt">Que la suma de la columna f sea igual al total de estudiantes encuestados</span></button><button type="button" class="opt" data-l="D" data-ok="0" data-err="eso se lee en la tabla, pero no comprueba que estén todos los datos" aria-pressed="false"><span class="chip">D</span><span class="txt">Que la frecuencia más alta sea la moda</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">Que la suma de la columna f sea igual al total de estudiantes encuestados. Es la celda de control de la tabla: si no coincide, hay un dato sin contar o contado dos veces.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+<article class="q" id="p15" data-n="15" data-ok="D" data-eje="D. Tabla de frecuencia absoluta"><div class="q-cab"><span class="num">15</span><h3>Según la tabla, ¿cuántos estudiantes más prefieren la manzana que la naranja?</h3></div><figure class="fig"><table class="datos"><caption>Fruta preferida del curso (30 estudiantes)</caption><thead><tr><th scope="col">Fruta</th><th scope="col">f</th></tr></thead><tbody><tr><th scope="row">Manzana</th><td>11</td></tr><tr><th scope="row">Plátano</th><td>8</td></tr><tr><th scope="row">Naranja</th><td>7</td></tr><tr><th scope="row">Uva</th><td>4</td></tr><tr class="total"><th scope="row">Total</th><td>30</td></tr></tbody></table></figure><div class="opts" role="group" aria-label="Alternativas de la pregunta 15"><button type="button" class="opt" data-l="A" data-ok="0" data-err="suma las dos frecuencias en vez de restarlas" aria-pressed="false"><span class="chip">A</span><span class="txt">18</span></button><button type="button" class="opt" data-l="B" data-ok="0" data-err="lee solo la fila de la manzana" aria-pressed="false"><span class="chip">B</span><span class="txt">11</span></button><button type="button" class="opt" data-l="C" data-ok="0" data-err="lee solo la fila de la naranja" aria-pressed="false"><span class="chip">C</span><span class="txt">7</span></button><button type="button" class="opt" data-l="D" data-ok="1" data-err="" aria-pressed="false"><span class="chip">D</span><span class="txt">4</span></button></div><div class="fb" role="status" hidden><p class="veredicto"></p><p class="error-nota" hidden></p><p class="expl">Se restan las dos frecuencias: 11 − 7 = 4 estudiantes de diferencia.</p><button type="button" class="retry">Volver a intentarla</button></div></article>
+</section>
+
+  <div class="resultado" id="resultado" hidden>
+    <h2>Resultado del repaso</h2>
+    <p class="puntaje"><strong id="r-puntaje">0</strong> <span>de 15 correctas</span></p>
+    <p id="r-mensaje"></p>
+    <ul class="resumen-ejes" id="r-ejes"></ul>
+    <div id="r-fallos-caja" hidden>
+      <p style="margin:18px 0 0;font-weight:600">Para repasar antes de la prueba:</p>
+      <ul class="fallos" id="r-fallos"></ul>
+    </div>
+    <div class="acciones">
+      <button type="button" class="btn" id="btn-repetir">Repetir todo el repaso</button>
+      <button type="button" class="btn sec" id="btn-arriba">Volver arriba</button>
+    </div>
+  </div>
+
+  <footer class="pie">Colegio Nahuel · Habilidades Digitales · Repaso formativo, no califica</footer>
+</main>
+
+<script>
+(function () {
+  var total = 15;
+  var preguntas = Array.prototype.slice.call(document.querySelectorAll('.q'));
+  var relleno = document.getElementById('relleno');
+  var marcador = document.getElementById('marcador');
+  var resultado = document.getElementById('resultado');
+
+  function estado() {
+    var resueltas = preguntas.filter(function (q) { return q.dataset.estado; });
+    var buenas = resueltas.filter(function (q) { return q.dataset.estado === 'ok'; });
+    return { resueltas: resueltas, buenas: buenas };
+  }
+
+  function pintarBarra() {
+    var e = estado();
+    relleno.style.width = (e.resueltas.length / total * 100) + '%';
+    marcador.textContent = e.resueltas.length === 0
+      ? '0 de ' + total + ' respondidas'
+      : e.resueltas.length + ' de ' + total + ' · ' + e.buenas.length + ' correctas';
+    if (e.resueltas.length === total) { mostrarResultado(e); }
+    else { resultado.hidden = true; }
+  }
+
+  function mostrarResultado(e) {
+    var buenas = e.buenas.length;
+    document.getElementById('r-puntaje').textContent = buenas;
+
+    var msg = document.getElementById('r-mensaje');
+    if (buenas === total) {
+      msg.textContent = 'Perfecto: respondiste las ' + total + ' bien. Estás listo para la prueba.';
+    } else if (buenas >= 12) {
+      msg.textContent = 'Muy bien. Repasa las que fallaste y llegas firme a la prueba.';
+    } else if (buenas >= 9) {
+      msg.textContent = 'Vas bien, pero hay temas que conviene volver a mirar antes de la prueba.';
+    } else {
+      msg.textContent = 'Todavía falta. Vuelve a los ejes que fallaste, repite el repaso y pregunta en clases lo que no te cuadre.';
+    }
+
+    // desglose por eje
+    var ejes = {}, orden = [];
+    preguntas.forEach(function (q) {
+      var k = q.dataset.eje;
+      if (!ejes[k]) { ejes[k] = { n: 0, ok: 0 }; orden.push(k); }
+      ejes[k].n++;
+      if (q.dataset.estado === 'ok') { ejes[k].ok++; }
+    });
+    var ul = document.getElementById('r-ejes');
+    ul.innerHTML = '';
+    orden.forEach(function (k) {
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.textContent = k;
+      var b = document.createElement('strong'); b.textContent = ejes[k].ok + ' / ' + ejes[k].n;
+      li.appendChild(a); li.appendChild(b); ul.appendChild(li);
+    });
+
+    // preguntas falladas, con enlace
+    var falladas = preguntas.filter(function (q) { return q.dataset.estado === 'mal'; });
+    var caja = document.getElementById('r-fallos-caja');
+    var lista = document.getElementById('r-fallos');
+    lista.innerHTML = '';
+    caja.hidden = falladas.length === 0;
+    falladas.forEach(function (q) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + q.id;
+      a.textContent = 'Pregunta ' + q.dataset.n + ' · ' + q.dataset.eje;
+      li.appendChild(a); lista.appendChild(li);
+    });
+
+    resultado.hidden = false;
+  }
+
+  function limpiar(q) {
+    delete q.dataset.estado;
+    q.classList.remove('resuelta', 'correcta', 'incorrecta');
+    q.querySelectorAll('.opt').forEach(function (o) {
+      o.classList.remove('buena', 'mala', 'apagada');
+      o.disabled = false;
+      o.setAttribute('aria-pressed', 'false');
+    });
+    var fb = q.querySelector('.fb');
+    fb.hidden = true;
+    fb.querySelector('.error-nota').hidden = true;
+  }
+
+  function responder(q, boton) {
+    if (q.dataset.estado) { return; }
+    var correcta = boton.dataset.ok === '1';
+    q.dataset.estado = correcta ? 'ok' : 'mal';
+    q.classList.add('resuelta', correcta ? 'correcta' : 'incorrecta');
+    boton.setAttribute('aria-pressed', 'true');
+
+    q.querySelectorAll('.opt').forEach(function (o) {
+      o.disabled = true;
+      if (o.dataset.ok === '1') { o.classList.add('buena'); }
+      else if (o === boton) { o.classList.add('mala'); }
+      else { o.classList.add('apagada'); }
+    });
+
+    var fb = q.querySelector('.fb');
+    var veredicto = fb.querySelector('.veredicto');
+    var nota = fb.querySelector('.error-nota');
+    if (correcta) {
+      veredicto.textContent = '¡Correcto!';
+      nota.hidden = true;
+    } else {
+      veredicto.textContent = 'Casi. La correcta es la ' + q.dataset.ok + '.';
+      if (boton.dataset.err) {
+        nota.textContent = 'Lo que pasó al elegir la ' + boton.dataset.l + ': ' + boton.dataset.err + '.';
+        nota.hidden = false;
+      }
+    }
+    fb.hidden = false;
+    pintarBarra();
+  }
+
+  preguntas.forEach(function (q) {
+    q.querySelectorAll('.opt').forEach(function (o) {
+      o.addEventListener('click', function () { responder(q, o); });
+    });
+    q.querySelector('.retry').addEventListener('click', function () {
+      limpiar(q);
+      pintarBarra();
+      q.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  document.getElementById('btn-repetir').addEventListener('click', function () {
+    preguntas.forEach(limpiar);
+    pintarBarra();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.getElementById('btn-arriba').addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  pintarBarra();
+})();
+</script>
+</body>
+</html>
